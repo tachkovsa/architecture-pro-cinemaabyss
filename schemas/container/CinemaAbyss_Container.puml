@@ -1,0 +1,57 @@
+@startuml C4 Container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/refs/heads/master/C4_Container.puml
+
+title Диаграмма контейнеров системы «Кинобездна»
+
+Person(Customer, "Пользователь системы «Кинобездна»", "Клиент компании, взаимодействующий с системой через веб, мобильное приложение или Smart TV")
+
+System_Ext("PaymentSystem", "Платёжная система", "Обработка и верификация платежей пользователей")
+System_Ext("RecommendationSystem", "Рекомендательная система", "Предоставление персонализированных рекомендаций контента")
+System_Ext("OnlineCinemaSystem", "Онлайн-кинотеатры", "Предоставление видеоконтента пользователям через стриминг")
+
+System_Boundary(CinemaAbyss, "Система «Кинобездна»") {
+    Container(WebFrontend, "WEB-приложение", "React")
+    Container(SmartTVFrontend, "Приложение SmartTV", "React Native")
+    Container(MobileAppFrontend, "Мобильное приложение", "Flutter")
+    
+    Container(APIProxy, "API Gateway", "Kong")
+
+    Container(PaymentService, "Платежный сервис", "Go")
+    Container(UserService, "Пользовательский сервис", "Go")
+    Container(VideoService, "Видео сервис", "Go")
+    Container(SubscriptionService, "Подписочный сервис", "Go")
+    Container(RecommendationService, "Рекомендательный сервис", "Go")
+
+    Container(MessageBroker, "Брокер сообщений", "Apache Kafka")
+    ContainerDb(Database, "База данных", "PostgreSQL")
+}
+
+Rel(Customer, WebFrontend, "HTTP/HTTPS запросы", "REST API")
+Rel(Customer, SmartTVFrontend, "HTTP/HTTPS запросы", "REST API")
+Rel(Customer, MobileAppFrontend, "HTTP/HTTPS запросы", "REST API")
+
+Rel(WebFrontend, APIProxy, "API запросы", "REST API")
+Rel(SmartTVFrontend, APIProxy, "API запросы", "REST API")
+Rel(MobileAppFrontend, APIProxy, "API запросы", "REST API")
+
+Rel(APIProxy, PaymentService, "Платежные операции", "REST API")
+Rel(APIProxy, UserService, "Управление пользователями", "REST API")
+Rel(APIProxy, VideoService, "Видео операции", "REST API")
+Rel(APIProxy, SubscriptionService, "Управление подписками", "REST API")
+Rel(APIProxy, RecommendationService, "Рекомендации", "REST API")
+
+Rel(PaymentService, MessageBroker, "События платежей", "Kafka")
+Rel(UserService, MessageBroker, "События пользователей", "Kafka")
+Rel(VideoService, MessageBroker, "События видео", "Kafka")
+Rel(SubscriptionService, MessageBroker, "События подписок", "Kafka")
+Rel(RecommendationService, MessageBroker, "События рекомендаций", "Kafka")
+
+Rel(PaymentService, PaymentSystem, "Обработка платежей", "REST API")
+Rel(RecommendationService, RecommendationSystem, "Получение рекомендаций", "REST API")
+Rel(VideoService, OnlineCinemaSystem, "Стриминг видео", "HLS/MPEG-DASH")
+
+Rel(UserService, Database, "Хранение данных пользователей", "ORM")
+Rel(SubscriptionService, Database, "Хранение подписок", "ORM")
+Rel(PaymentService, Database, "Хранение платежей", "ORM")
+
+@enduml
