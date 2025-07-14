@@ -32,6 +32,19 @@ app.use(/^\/api\/movies(\/.*)?$/, (req, res, next) => {
   })(req, res, next);
 });
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+app.use((req, res, next) => {
+  if (req.path === '/health') return next();
+  return createProxyMiddleware({
+    target: MONOLITH_URL,
+    changeOrigin: true,
+    pathRewrite: (path, req) => path
+  })(req, res, next);
+});
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Proxy service listening on port ${PORT}`);
