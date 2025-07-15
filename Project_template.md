@@ -426,6 +426,10 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 
 Приложите скриншот работы circuit breaker'а
 
+***В теории отсутствует информация про circuit breaker, она появляется только в 6-м спринте, текущий результат запуска:***
+![Fortio -1](/assets/fortio_1.png)
+![Fortio -2](/assets/fortio_2.png)
+
 Удаляем все
 ```bash
 istioctl uninstall --purge

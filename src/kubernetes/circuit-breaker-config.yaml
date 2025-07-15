@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: monolith-circuit-breaker
+spec:
+  host: monolith
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+    trafficPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 100
+        http:
+          http1MaxPendingRequests: 100
+          maxRequestsPerConnection: 10
+      outlierDetection:
+        consecutiveErrors: 5
+        interval: 10s
+        baseEjectionTime: 30s
+        maxEjectionPercent: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: movies-circuit-breaker
+spec:
+  host: movies-service
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+    trafficPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 100
+        http:
+          http1MaxPendingRequests: 100
+          maxRequestsPerConnection: 10
+      outlierDetection:
+        consecutiveErrors: 5
+        interval: 10s
+        baseEjectionTime: 30s
+        maxEjectionPercent: 100
