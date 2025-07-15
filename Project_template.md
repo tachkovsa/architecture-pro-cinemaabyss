@@ -276,6 +276,9 @@ cat .docker/config.json | base64
   Часть тестов с health-чек упадет, но создание событий отработает.
   Откройте логи event-service и сделайте скриншот обработки событий
 
+  ![Результаты тестов](/assets/k8s_tests_result.png)
+  ![K8S - event-service-log](/assets/k8s_events-service-log.png)
+
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
 
