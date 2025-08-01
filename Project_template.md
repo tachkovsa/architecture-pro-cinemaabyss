@@ -5,7 +5,7 @@
 1. Спроектируйте to be архитектуру КиноБездны, разделив всю систему на отдельные домены и организовав интеграционное взаимодействие и единую точку вызова сервисов.
 Результат представьте в виде контейнерной диаграммы в нотации С4.
 Добавьте ссылку на файл в этот шаблон
-[ссылка на файл](ссылка)
+[Диаграмма контейнеров системы «Кинобездна»](./schemas/container/CinemaAbyss_Container.puml)
 
 
 ## Задание 2
@@ -59,6 +59,11 @@
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
 
+![Результаты тестов](/assets/tests_result.png)
+![Кафка - Топики](/assets/kafka_topics.png)
+![Кафка - Пользователи](/assets/kafka_topics_users.png)
+![Кафка - Фильмы](/assets/kafka_topics_movie.png)
+![Кафка - Платежи](/assets/kafka_topics_payments.png)
 
 ## Задание 3
 
@@ -271,6 +276,9 @@ cat .docker/config.json | base64
   Часть тестов с health-чек упадет, но создание событий отработает.
   Откройте логи event-service и сделайте скриншот обработки событий
 
+  ![Результаты тестов](/assets/k8s_tests_result.png)
+  ![K8S - event-service-log](/assets/k8s_events-service-log.png)
+
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
 
@@ -349,6 +357,9 @@ minikube tunnel
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
 
+  ![Helm - Started](/assets/helm_started.png)
+  ![Helm - k8s pods](/assets/helm_k8s_pods.png)
+  ![Helm - Movies](/assets/helm_movies.png)
 
 # Задание 5
 Компания планирует активно развиваться и для повышения надежности, безопасности, реализации сетевых паттернов типа Circuit Breaker и канареечного деплоя вам как архитектору необходимо развернуть istio и настроить circuit breaker для monolith и movies сервисов.
@@ -414,6 +425,10 @@ You can see 21 for the upstream_rq_pending_overflow value which means 21 calls s
 ```
 
 Приложите скриншот работы circuit breaker'а
+
+***В теории отсутствует информация про circuit breaker, она появляется только в 6-м спринте, текущий результат запуска:***
+![Fortio -1](/assets/fortio_1.png)
+![Fortio -2](/assets/fortio_2.png)
 
 Удаляем все
 ```bash
